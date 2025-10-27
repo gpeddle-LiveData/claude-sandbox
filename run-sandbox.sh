@@ -44,6 +44,15 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# JSON logging function
+log_json() {
+    local event="$1"
+    local data="$2"
+    local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+    echo "{\"timestamp\":\"${timestamp}\",\"event\":\"${event}\",\"data\":${data}}" >> "${LOG_FILE}"
+}
+
 show_usage() {
     cat <<EOF
 Usage: $0 <workspace-dir> [command]
@@ -99,9 +108,14 @@ fi
 # Convert to absolute path
 WORKSPACE_DIR="$(cd "$WORKSPACE_DIR" && pwd)"
 
-# Generate unique container name
+# Generate unique container name and log file
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 SANDBOX_NAME="${SANDBOX_NAME:-claude-sandbox-${TIMESTAMP}}"
+LOG_DIR="logs"
+LOG_FILE="${LOG_DIR}/${SANDBOX_NAME}.json"
+
+# Create logs directory if it doesn't exist
+mkdir -p "${LOG_DIR}"
 
 # Check if Docker is running
 if ! docker info >/dev/null 2>&1; then
@@ -129,6 +143,10 @@ if ! docker info 2>/dev/null | grep -q "Runtimes:.*runsc"; then
     SANDBOX_RUNTIME="runc"
 fi
 
+# Log execution start
+START_TIME=$(date +%s)
+log_json "start" "{\"container\":\"${SANDBOX_NAME}\",\"workspace\":\"${WORKSPACE_DIR}\",\"memory\":\"${SANDBOX_MEMORY}\",\"cpus\":\"${SANDBOX_CPUS}\",\"network\":\"${SANDBOX_NETWORK}\",\"runtime\":\"${SANDBOX_RUNTIME}\",\"pids_limit\":\"${SANDBOX_PIDS_LIMIT}\",\"command\":\"${COMMAND[*]}\"}"
+
 # Run the sandbox
 log_info "Starting sandbox container: $SANDBOX_NAME"
 log_info "  Workspace: $WORKSPACE_DIR"
@@ -137,6 +155,7 @@ log_info "  CPUs: $SANDBOX_CPUS"
 log_info "  Network: $SANDBOX_NETWORK"
 log_info "  Runtime: $SANDBOX_RUNTIME"
 log_info "  Command: ${COMMAND[*]}"
+log_info "  Log file: $LOG_FILE"
 
 # Docker run options
 DOCKER_OPTS=(
@@ -157,11 +176,16 @@ DOCKER_OPTS=(
 docker run "${DOCKER_OPTS[@]}" "$SANDBOX_IMAGE" "${COMMAND[@]}"
 
 EXIT_CODE=$?
+END_TIME=$(date +%s)
+DURATION=$((END_TIME - START_TIME))
+
+# Log execution completion
+log_json "complete" "{\"exit_code\":${EXIT_CODE},\"duration_seconds\":${DURATION},\"success\":$([ $EXIT_CODE -eq 0 ] && echo \"true\" || echo \"false\")}"
 
 if [ $EXIT_CODE -eq 0 ]; then
-    log_info "Sandbox exited successfully"
+    log_info "Sandbox exited successfully (${DURATION}s)"
 else
-    log_error "Sandbox exited with code: $EXIT_CODE"
+    log_error "Sandbox exited with code: $EXIT_CODE (${DURATION}s)"
 fi
 
 exit $EXIT_CODE

@@ -2,7 +2,7 @@
 
 **Created:** 2025-10-27
 **Platform:** macOS (primary), Windows (secondary), Linux (supported)
-**Status:** Research & Design Phase
+**Status:** Phase 2 Complete - Observability Implemented
 
 ## Overview
 
@@ -101,22 +101,25 @@ Each project includes:
 - [x] Create test infrastructure
 - [x] Document architecture
 
-### ⏳ Phase 1: Proof of Concept (Week 1)
-- [ ] Install Docker Desktop + gVisor
-- [ ] Create basic Dockerfile
-- [ ] Implement run-sandbox.sh wrapper
-- [ ] Test Projects 1.1 and 1.2
+### ✅ Phase 1: Proof of Concept (Oct 27, 2025)
 
-### Phase 2: Observability (Week 2)
-- [ ] Add structured logging
-- [ ] Implement monitoring dashboard
-- [ ] Real-time status viewer
-- [ ] Filesystem snapshot capability
+- [x] Docker Desktop configured (gVisor pending)
+- [x] Created Dockerfile with Python 3.11-slim base
+- [x] Implemented run-sandbox.sh wrapper with full isolation
+- [x] Tested Projects 1.1, 1.2, 2.1, 2.2 successfully
 
-### Phase 3: Hardening (Week 3)
-- [ ] Run Project 4.4 (escape attempts)
-- [ ] Verify all escapes fail
-- [ ] Tune resource limits
+### ✅ Phase 2: Observability (Oct 27, 2025)
+
+- [x] Added structured JSON logging
+- [x] Implemented sandbox-monitor.sh (real-time stats)
+- [x] Created sandbox-history.sh (execution history)
+- [x] Verified memory limit enforcement (OOM killer working)
+
+### ⏳ Phase 3: Hardening (Pending)
+
+- [x] Run Project 4.4 (escape attempts) - Partial testing
+- [ ] Install gVisor for enhanced syscall filtering
+- [ ] Add seccomp profiles
 - [ ] Performance optimization
 
 ### Phase 4: Production (Week 4)

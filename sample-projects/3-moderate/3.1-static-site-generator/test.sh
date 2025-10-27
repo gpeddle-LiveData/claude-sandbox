@@ -4,11 +4,28 @@ set -euo pipefail
 PROJECT_NAME="3.1-static-site-generator"
 WORKSPACE="$(pwd)/workspace"
 
-echo "=== Testing: $PROJECT_NAME ==="
-echo "⚠️  This project is not fully implemented yet"
+echo "=== Testing: ${PROJECT_NAME} ==="
 
-mkdir -p "$WORKSPACE"
+# Copy data to workspace
+mkdir -p "${WORKSPACE}"
+cp -r data/content "${WORKSPACE}/"
+cp -r templates "${WORKSPACE}/"
 
-# TODO: Add full test implementation
+# Check if output was generated
+if [ -d "${WORKSPACE}/output" ] && [ -f "${WORKSPACE}/output/index.html" ]; then
+    echo "✅ Site generated"
 
-echo "✅ Placeholder test passed"
+    # Check for post files
+    post_count=$(find "${WORKSPACE}/output" -name "post*.html" | wc -l | tr -d ' ')
+    if [ "$post_count" -ge 2 ]; then
+        echo "✅ Posts generated: $post_count"
+    else
+        echo "❌ Expected at least 2 posts, found $post_count"
+        exit 1
+    fi
+
+    echo "✅ Test passed: ${PROJECT_NAME}"
+else
+    echo "❌ Site not generated"
+    exit 1
+fi

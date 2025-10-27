@@ -68,3 +68,7 @@ Desktop.ini
 
 # Project specific
 # Add your ignores below
+
+# Sandbox logs and test workspaces
+logs/
+sample-projects/*/workspace/

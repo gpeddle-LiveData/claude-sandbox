@@ -1,1 +1,10 @@
-[TODO: Detailed prompt for Static Website Generator]
+Create a static site generator that converts markdown files to HTML:
+
+1. Read all .md files from content/ directory
+2. Parse front matter (YAML) for metadata (title, date, author)
+3. Convert markdown to HTML
+4. Apply templates from templates/ directory
+5. Generate index page with list of all posts
+6. Write HTML files to output/ directory
+
+Use the provided markdown content and Jinja2 templates.

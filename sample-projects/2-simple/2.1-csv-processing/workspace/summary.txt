@@ -1,0 +1,25 @@
+Sales Summary Report
+==================================================
+
+Revenue by Product:
+--------------------------------------------------
+Doohickey: $76,201.86
+Thingamajig: $75,652.15
+Widget: $72,493.67
+Gadget: $66,716.45
+
+Quantity Sold by Product:
+--------------------------------------------------
+Doohickey: 2,814 units
+Thingamajig: 2,785 units
+Widget: 2,633 units
+Gadget: 2,355 units
+
+Best-Selling Product:
+--------------------------------------------------
+Doohickey: 2,814 units
+
+Totals:
+--------------------------------------------------
+Total Revenue: $291,064.13
+Total Units Sold: 10,587
