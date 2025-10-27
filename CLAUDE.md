@@ -16,16 +16,17 @@ This project creates a cohesive, observable, and secure sandbox environment wher
 
 ### Current Status
 
-**Phase:** Research & Design Complete ✅
+**Phase:** v1.0-beta Released! ✅
 
 **Completed:**
-- ✅ Technology evaluation (5 options analyzed)
-- ✅ Selected Docker Desktop + gVisor (cross-platform solution)
-- ✅ Defined 8 sample test projects
-- ✅ Created test infrastructure (204 files)
+- ✅ Phase 1: Docker sandbox with full isolation
+- ✅ Phase 2: Observability (logging, monitoring, history)
+- ✅ Phase 3: Security hardening (seccomp, capabilities, no-new-privileges)
+- ✅ 6 working sample projects (1.1, 1.2, 2.1, 2.2, 3.1, 4.4)
+- ✅ Comprehensive documentation (QUICKSTART.md, COMPREHENSIVE_GUIDE.md, GVISOR.md)
 - ✅ All work documented in `.air/tasks/`
 
-**Next:** Phase 1 - Proof of Concept (Docker+gVisor implementation)
+**Next:** Phase 4 - Community feedback and remaining sample projects
 
 ## Project Structure
 
@@ -53,15 +54,19 @@ claude-sandbox/
 
 ## Key Technical Decisions
 
-### Sandbox Technology: Docker Desktop + gVisor
+### Sandbox Technology: Docker + Security Hardening
 
-**Why:**
-- Only solution that works on macOS, Windows, and Linux
-- VM-level security (gVisor intercepts all syscalls)
-- Container-level performance (~10-20% overhead)
-- Industry-standard (Google production use)
+**Implementation:**
+- Docker with seccomp profiles (syscall filtering)
+- Capability dropping (minimal Linux capabilities)
+- No-new-privileges flag (prevents escalation)
+- Read-only root filesystem
+- Network isolation (--network=none)
+- Memory/CPU/process limits
 
-**See:** `analysis/reviews/sandbox-options.md` for full evaluation
+**Optional:** gVisor available on Linux for VM-level syscall interception
+
+**See:** `analysis/reviews/sandbox-options.md` and `docs/GVISOR.md`
 
 ### Sample Projects
 
@@ -70,10 +75,10 @@ claude-sandbox/
 1. **1.1: Hello World** ✅ - Basic execution
 2. **1.2: Calculator** ✅ - Multi-file + pytest
 3. **2.1: CSV Processing** ✅ - File I/O (1000 rows)
-4. **2.2: Doc Generator** ✅ - Template processing
-5. **3.1: Site Generator** ⚠️ - Complex workflow (placeholder)
+4. **2.2: Doc Generator** ✅ - Template processing with markdown
+5. **3.1: Site Generator** ✅ - Markdown to HTML with Jinja2
 6. **3.2: Log Analyzer** ⚠️ - Stress test 100MB (placeholder)
-7. **4.1-4.3** ⚠️ - Production scenarios (placeholder)
+7. **4.1-4.3** ⚠️ - Production scenarios (placeholders)
 8. **4.4: Escape Attempts** ✅ - **Security validation (adversarial)**
 
 **See:** `analysis/sample-projects.md` and `sample-projects/README.md`
