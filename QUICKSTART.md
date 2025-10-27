@@ -2,9 +2,16 @@
 
 ## What This Is
 
-A secure sandbox for running untrusted Python code. Perfect for:
-- Testing Claude Code scripts safely
-- Running user-submitted code
+A secure sandbox framework that lets **Claude Code run autonomously with `--dangerously-skip-permissions`** safely.
+
+Instead of giving Claude Code unrestricted access to your system, run it in an isolated container with:
+- ✅ Filesystem isolation (can't access your files)
+- ✅ Network isolation (can't make external connections)
+- ✅ Resource limits (can't consume all memory/CPU)
+- ✅ Complete observability (logs every action)
+
+**Also perfect for:**
+- Testing untrusted scripts
 - CI/CD pipelines
 - Development environments
 
@@ -38,7 +45,8 @@ This creates a secure Python 3.11 environment with common packages pre-installed
 ```
 
 You should see:
-```
+
+```text
 [INFO] Starting sandbox container...
 Hello from the sandbox!
 Current timestamp: 2025-10-27 17:07:58
@@ -49,7 +57,26 @@ Current timestamp: 2025-10-27 17:07:58
 
 ## Basic Usage
 
-### Run Your Own Code
+### Use with Claude Code
+
+**Instead of this (dangerous):**
+```bash
+claude --dangerously-skip-permissions "process the CSV files in ./data"
+# ⚠️ Claude has full access to your system!
+```
+
+**Do this (safe):**
+```bash
+# 1. Put your data in a workspace
+mkdir workspace
+cp -r ./data workspace/
+
+# 2. Run Claude Code's output in the sandbox
+./run-sandbox.sh workspace python3 generated_script.py
+# ✅ Claude's code runs isolated from your system
+```
+
+### Run Any Python Code
 
 ```bash
 # Create a workspace
@@ -79,6 +106,7 @@ SANDBOX_MEMORY=2g ./run-sandbox.sh my-workspace python3 script.py
 ## What's Included
 
 ### Security (Automatic)
+
 - ✅ Filesystem isolation (read-only root)
 - ✅ Network isolation (no internet access)
 - ✅ Memory limits (4GB default, OOM killer active)
@@ -87,18 +115,51 @@ SANDBOX_MEMORY=2g ./run-sandbox.sh my-workspace python3 script.py
 - ✅ No privilege escalation possible
 
 ### Monitoring
+
 - ✅ JSON logs for every execution
 - ✅ Real-time monitoring (`./sandbox-monitor.sh`)
 - ✅ Execution history and stats
 - ✅ Exit codes and duration tracking
 
 ### Pre-installed Packages
+
 - pytest, pytest-cov
 - requests
 - pandas
 - jinja2
 - markdown
 - pillow
+
+## Claude Code Integration Workflow
+
+### Typical Development Flow
+
+1. **Ask Claude Code to generate code** (without `--dangerously-skip-permissions`)
+2. **Review the generated code** in your workspace directory
+3. **Run it in the sandbox** to test safely
+4. **Check the results** and iterate if needed
+
+**Example:**
+```bash
+# 1. Claude generates code to workspace/process_data.py
+# 2. You review it
+# 3. Run it safely:
+./run-sandbox.sh workspace python3 process_data.py
+
+# 4. Check results and logs:
+./sandbox-history.sh --recent 1
+ls workspace/output/
+```
+
+### Automated Workflow (Advanced)
+
+For fully autonomous operation, you could:
+1. Have Claude Code write to a staging directory
+2. Automatically run in sandbox via CI/CD
+3. Review logs and results
+4. Promote to production if tests pass
+
+**This project provides the secure execution layer for that workflow.**
 
 ## Common Tasks
 
@@ -184,6 +245,7 @@ docker build -t claude-sandbox:latest -f Dockerfile.claude-sandbox .
 ### "Docker is not running"
 
 Start Docker Desktop and wait for it to be ready:
+
 - **macOS**: Look for whale icon in menu bar
 - **Windows**: Look for whale icon in system tray
 - **Linux**: `sudo systemctl start docker`
@@ -191,12 +253,14 @@ Start Docker Desktop and wait for it to be ready:
 ### "Permission denied"
 
 Make sure Docker has access to your directories:
+
 - **macOS**: System Preferences → Privacy & Security → Files and Folders → Docker
 - **Windows**: Docker Desktop settings → Resources → File Sharing
 
 ### Container exits immediately
 
 Check what went wrong:
+
 ```bash
 ./sandbox-history.sh --recent 1
 ```
@@ -210,9 +274,9 @@ Check what went wrong:
 
 ## Getting Help
 
-- **Issues**: https://github.com/gpeddle-LiveData/claude-sandbox/issues
+- **Issues**: <https://github.com/gpeddle-LiveData/claude-sandbox/issues>
 - **Full docs**: See `docs/` directory
-- **README**: https://github.com/gpeddle-LiveData/claude-sandbox
+- **README**: <https://github.com/gpeddle-LiveData/claude-sandbox>
 
 ---
 
