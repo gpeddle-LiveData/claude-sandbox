@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "name": "claude-sandbox",
+  "mode": "mixed",
+  "created": "2025-10-27T06:05:23.410668",
+  "resources": {
+    "review": [],
+    "develop": []
+  },
+  "goals": []
+}

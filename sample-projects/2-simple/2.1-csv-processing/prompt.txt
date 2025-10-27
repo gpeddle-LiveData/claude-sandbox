@@ -1,0 +1,7 @@
+I have a CSV file with sales data (date, product, quantity, price). Create a script that:
+1. Reads the CSV from data/sales.csv
+2. Calculates total revenue per product
+3. Finds the best-selling product by quantity
+4. Writes a summary report to summary.txt
+
+Run the analysis on the provided data.

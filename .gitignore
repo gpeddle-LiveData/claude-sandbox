@@ -1,0 +1,70 @@
+# AIR Assessment Project
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.venv
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# AIR specific
+# Linked repositories are symlinks - don't commit the links themselves
+# But DO track the config that lists them
+repos/*
+!repos/.gitkeep
+
+# Contributions directory - staged changes for PRs to external repos
+# Don't commit if symlinked
+contributions/*
+!contributions/.gitkeep
+
+# Agent system (v0.6.0+)
+# Agent logs are transient, findings are tracked
+.air/agents/*/stdout.log
+.air/agents/*/stderr.log
+.air/agents/*/status.json
+
+# Temporary files
+*.tmp
+*.log
+.cache/
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Project specific
+# Add your ignores below

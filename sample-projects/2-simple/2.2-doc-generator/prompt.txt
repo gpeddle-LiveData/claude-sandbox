@@ -1,0 +1,6 @@
+Create a Python script that generates API documentation from Python docstrings. For each .py file in data/src/, extract docstrings and create a markdown file in docs/ with:
+- Function signatures
+- Docstring descriptions
+- Parameter lists
+
+Generate docs for the provided source files.
