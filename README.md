@@ -130,13 +130,35 @@ Each project includes:
 
 ## Quick Start
 
+**📚 See [docs/QUICKSTART.md](docs/QUICKSTART.md) for complete guide with examples**
+
+### 5-Minute Setup
+
+1. **Clone and build:**
+   ```bash
+   git clone https://github.com/gpeddle-LiveData/claude-sandbox.git
+   cd claude-sandbox
+   docker build -t claude-sandbox:latest -f Dockerfile.claude-sandbox .
+   ```
+
+2. **Test it:**
+   ```bash
+   ./run-sandbox.sh sample-projects/1-trivial/1.1-hello-world/workspace python3 hello.py
+   ```
+
+3. **View history:**
+   ```bash
+   ./sandbox-history.sh --stats
+   ```
+
+**That's it!** The sandbox is ready to use.
+
 ### Prerequisites
 
 - Docker Desktop (macOS/Windows/Linux)
-- gVisor runtime (runsc)
 - Git
 
-### Installation (macOS)
+### Full Installation (macOS)
 
 ```bash
 # 1. Clone repository

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Best Practices - My Blog</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        header { border-bottom: 2px solid #333; margin-bottom: 20px; padding-bottom: 10px; }
+        .post-meta { color: #666; font-size: 0.9em; }
+        pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+        code { background: #f4f4f4; padding: 2px 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">My Blog</a></h1>
+    </header>
+    <main>
+        
+<article>
+    <h1>Docker Best Practices</h1>
+    <div class="post-meta">
+        By John DevOps on 2024-02-20
+    </div>
+    <div class="content">
+        <h1>Docker Best Practices</h1>
+<p>Learn how to use Docker effectively in your projects.</p>
+<h2>Key Principles</h2>
+<ol>
+<li>Use official base images</li>
+<li>Minimize layer count</li>
+<li>Don't run as root</li>
+</ol>
+<h2>Example Dockerfile</h2>
+<div class="codehilite"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span>
+<span class="k">USER</span><span class="w"> </span><span class="s">nobody</span>
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;app.py&quot;</span><span class="p">]</span>
+</code></pre></div>
+    </div>
+</article>
+
+    </main>
+    <footer>
+        <p>&copy; 2024 My Blog</p>
+    </footer>
+</body>
+</html>

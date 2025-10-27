@@ -170,7 +170,18 @@ DOCKER_OPTS=(
     --tmpfs /tmp/claude-tmp:rw,noexec,nosuid,size=1g  # Writable temp
     -v "${WORKSPACE_DIR}:/workspace:rw"     # Mount workspace
     -w /workspace                           # Set working directory
+    --security-opt=no-new-privileges:true   # Prevent privilege escalation
+    --cap-drop=ALL                          # Drop all capabilities
+    --cap-add=CHOWN                         # Allow chown (for file ownership)
+    --cap-add=DAC_OVERRIDE                  # Allow file access override
+    --cap-add=SETGID                        # Allow setgid (for group changes)
+    --cap-add=SETUID                        # Allow setuid (for user changes)
 )
+
+# Add seccomp profile if it exists
+if [ -f "seccomp-profile.json" ]; then
+    DOCKER_OPTS+=(--security-opt seccomp="$(pwd)/seccomp-profile.json")
+fi
 
 # Run the container
 docker run "${DOCKER_OPTS[@]}" "$SANDBOX_IMAGE" "${COMMAND[@]}"
