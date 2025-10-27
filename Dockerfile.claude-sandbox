@@ -1,0 +1,64 @@
+# Dockerfile.claude-sandbox
+# Secure sandbox environment for running Claude Code under --dangerously-skip-permissions
+#
+# Security Features:
+# - Runs as non-root user
+# - Read-only root filesystem
+# - Isolated network namespace
+# - Resource limits enforced by Docker
+# - gVisor runtime for syscall filtering
+
+FROM python:3.11-slim
+
+# Metadata
+LABEL maintainer="claude-sandbox"
+LABEL description="Secure sandbox for Claude Code autonomous execution"
+LABEL version="1.0.0"
+
+# Install system dependencies
+# Keep minimal to reduce attack surface
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create workspace and temp directories with proper permissions
+RUN mkdir -p /workspace /tmp/claude-tmp && \
+    chmod 1777 /workspace /tmp/claude-tmp
+
+# Create non-root user for running sandboxed code
+# UID 1000 is standard for first non-root user
+RUN useradd -m -u 1000 -s /bin/bash claudeuser && \
+    chown -R claudeuser:claudeuser /workspace /tmp/claude-tmp
+
+# Install common Python packages that might be needed
+# This reduces network dependency during runtime
+RUN pip install --no-cache-dir \
+    pytest \
+    pytest-cov \
+    requests \
+    pandas \
+    jinja2 \
+    markdown \
+    pillow
+
+# Set working directory
+WORKDIR /workspace
+
+# Switch to non-root user
+USER claudeuser
+
+# Environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV HOME=/tmp/claude-tmp
+ENV TMPDIR=/tmp/claude-tmp
+ENV PATH="/home/claudeuser/.local/bin:${PATH}"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD python3 --version || exit 1
+
+# Default command: Interactive shell for debugging
+# In production, this will be overridden by run-sandbox.sh
+CMD ["/bin/bash"]
