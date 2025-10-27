@@ -151,7 +151,6 @@ DOCKER_OPTS=(
     --tmpfs /tmp/claude-tmp:rw,noexec,nosuid,size=1g  # Writable temp
     -v "${WORKSPACE_DIR}:/workspace:rw"     # Mount workspace
     -w /workspace                           # Set working directory
-    -it                                     # Interactive + TTY
 )
 
 # Run the container

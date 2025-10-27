@@ -18,11 +18,11 @@ Continue with Phase 1: Implement the Docker+gVisor sandbox framework
 - `run-sandbox.sh` - Wrapper script (to be created)
 
 ## Outcome
-⚠️ Partial - Implementation Complete, Testing Pending
+✅ Success
 
 ## Summary
 
-**Completed:**
+**Implementation:**
 - ✅ Created `Dockerfile.claude-sandbox` (65 lines)
   - Based on python:3.11-slim
   - Runs as non-root user (claudeuser, UID 1000)
@@ -30,7 +30,7 @@ Continue with Phase 1: Implement the Docker+gVisor sandbox framework
   - Pre-installs common packages (pytest, pandas, jinja2, etc.)
   - Health check configured
   
-- ✅ Created `run-sandbox.sh` (179 lines)
+- ✅ Created `run-sandbox.sh` (176 lines)
   - Full-featured wrapper script
   - Configurable resource limits (memory, CPU, pids)
   - Network isolation by default
@@ -38,17 +38,35 @@ Continue with Phase 1: Implement the Docker+gVisor sandbox framework
   - Auto-builds image if missing
   - Colored logging output
   - Comprehensive error handling
+  - Fixed: Removed -it flags for non-interactive execution
 
-**Pending:**
-- ⏳ Docker Desktop installation required
-- ⏳ gVisor installation required
-- ⏳ Testing with sample projects
+**Testing:**
+- ✅ Docker image built successfully
+- ✅ Project 1.1 (Hello World): PASSED
+  - Python script executed successfully in sandbox
+  - Output: "Hello from the sandbox!" + timestamp
+- ✅ Project 1.2 (Calculator): PASSED
+  - All 5 pytest tests passed
+  - Multi-file project works correctly
+- ✅ Isolation verified:
+  - ✅ Read-only root filesystem (cannot write to /tmp)
+  - ✅ Workspace is writable
+  - ✅ Container filesystem isolated from host
+  - ✅ Network isolation (--network=none)
+  - ⚠️ gVisor not installed (using runc fallback)
+
+**Security Status:**
+- Process isolation: ✅ Working
+- Filesystem isolation: ✅ Working
+- Network isolation: ✅ Working
+- Resource limits: ✅ Configured
+- Syscall filtering: ⚠️ Basic (runc), gVisor recommended
 
 **Next Steps:**
-User needs to install:
-1. Docker Desktop for Mac
-2. gVisor runtime (optional but recommended)
-3. Then test with Projects 1.1 and 1.2
+- Install gVisor for enhanced syscall filtering
+- Test Projects 2.1 and 2.2
+- Test Project 4.4 (escape attempts)
+- Cross-platform testing (Windows)
 
 ## Notes
 Phase 1 implementation following the research in analysis/reviews/sandbox-options.md

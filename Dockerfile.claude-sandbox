@@ -17,10 +17,12 @@ LABEL version="1.0.0"
 
 # Install system dependencies
 # Keep minimal to reduce attack surface
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# NOTE: git and curl removed due to network issues during build
+# They can be added later if needed for specific projects
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     git \
+#     curl \
+#     && rm -rf /var/lib/apt/lists/*
 
 # Create workspace and temp directories with proper permissions
 RUN mkdir -p /workspace /tmp/claude-tmp && \
